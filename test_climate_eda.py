@@ -133,7 +133,8 @@ class TestClimateEDA(unittest.TestCase):
 
     def calculate_grade(self):
         # Correction for error all_code is not an attributes from chatgpt solutions
-
+        if not hasattr(self, 'all_code'):
+            self.setUpClass()
 
         """Calculate the grade based on passing tests"""
         # List of all test methods
