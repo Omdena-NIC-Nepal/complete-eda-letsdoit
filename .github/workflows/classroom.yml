@@ -2,39 +2,51 @@ name: Grade Assignment
 
 on:
   push:
-    branches: [main]
+    branches: [sabin]
   pull_request:
-    branches: [main]
+    branches: [sabin]
 
 jobs:
   grade:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.8'
+        python-version: '3.12.7'  # Ensure you're using the correct Python version
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install numpy pandas matplotlib seaborn nbformat nbconvert jupyter_client
+        pip install numpy pandas matplotlib seaborn nbformat nbconvert jupyter_client jupyter
+        python -m ipykernel install --user --name=python3 --display-name "Python 3"  # Register the python3 kernel
+
+    - name: Check available kernels (debugging step)
+      run: |
+        jupyter kernelspec list  # This will help confirm if 'python3' is available in the environment
+
+    - name: Execute the notebook with Python 3 kernel
+      run: |
+        jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 climate_eda.ipynb
+
 
     - name: Run tests and calculate grade
       run: |
         # Generate climate data
-        python climate_data.py
+        # python climate_data.py
+        python climate_eda.ipynb
 
         # Run tests
-        python -m unittest test_climate_eda.py
+        # python -m unittest test_climate_eda.py
+        python -m unittest test_assignment.py
 
         # Extract grade from test output
         GRADE=$(python -c "
         import unittest
-        from test_climate_eda import TestClimateEDA
+        from test_assignment import TestClimateEDA
         test_case = TestClimateEDA()
         print(test_case.calculate_grade())
           ")
