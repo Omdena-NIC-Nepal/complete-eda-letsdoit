@@ -2,9 +2,9 @@ name: Grade Assignment
 
 on:
   push:
-    branches: [sabin]
+    branches: [main]
   pull_request:
-    branches: [sabin]
+    branches: [main]
 
 jobs:
   grade:
