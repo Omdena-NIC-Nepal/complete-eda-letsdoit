@@ -26,10 +26,12 @@ jobs:
     - name: Run tests and calculate grade
       run: |
         # Generate climate data
-        python climate_data.py
+        # python climate_data.py
+        python climate_eda.py
 
         # Run tests
-        python -m unittest test_climate_eda.py
+        # python -m unittest test_climate_eda.py
+        python -m unittest test_assignment.py
 
         # Extract grade from test output
         GRADE=$(python -c "
