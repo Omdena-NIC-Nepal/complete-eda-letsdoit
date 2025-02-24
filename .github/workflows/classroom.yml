@@ -27,7 +27,7 @@ jobs:
       run: |
         # Generate climate data
         # python climate_data.py
-        python climate_eda.ipynb
+        python climate_eda.py
 
         # Run tests
         # python -m unittest test_climate_eda.py
