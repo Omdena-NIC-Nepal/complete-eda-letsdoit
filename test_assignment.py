@@ -13,6 +13,10 @@ class TestClimateEDA(unittest.TestCase):
         with open('climate_eda.ipynb', 'r', encoding='utf-8') as f:
             cls.notebook = nbformat.read(f, as_version=4)
 
+        # Debugging: Check if notebook is loaded and print first 2 cells
+        print("Loaded notebook:", cls.notebook)
+        print("First two cells:", cls.notebook['cells'][:2])
+
         # Execute the notebook
         ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
         ep.preprocess(cls.notebook, {'metadata': {'path': '.'}})
@@ -22,6 +26,10 @@ class TestClimateEDA(unittest.TestCase):
         cls.markdown_cells = [cell for cell in cls.notebook.cells if cell['cell_type'] == 'markdown']
         cls.all_code = '\n'.join([cell['source'] for cell in cls.code_cells])
         cls.all_markdown = '\n'.join([cell['source'] for cell in cls.markdown_cells])
+
+        # Debugging: Print number of code and markdown cells
+        print(f"Number of code cells: {len(cls.code_cells)}")
+        print(f"Number of markdown cells: {len(cls.markdown_cells)}")
 
         # Check if data was loaded properly
         for cell in cls.code_cells:
