@@ -16,12 +16,22 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12.7'
+        python-version: '3.12.7'  # Ensure you're using the correct Python version
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install numpy pandas matplotlib seaborn nbformat nbconvert jupyter_client
+        pip install numpy pandas matplotlib seaborn nbformat nbconvert jupyter_client jupyter
+        python -m ipykernel install --user --name=python3 --display-name "Python 3"  # Register the python3 kernel
+
+    - name: Check available kernels (debugging step)
+      run: |
+        jupyter kernelspec list  # This will help confirm if 'python3' is available in the environment
+
+    - name: Execute the notebook with Python 3 kernel
+      run: |
+        jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 climate_eda.ipynb
+
 
     - name: Run tests and calculate grade
       run: |
